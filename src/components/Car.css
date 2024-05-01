@@ -1,0 +1,23 @@
+.home-page {
+  margin-bottom: 20px;
+  background-color: #00000071;
+  border-radius: 20px;
+  padding: 50px;
+  backdrop-filter: blur(40px);
+  border: 1px dotted white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  width: 500px;
+}
+
+#upper {
+  font-size: 20px;
+}
+
+#plus {
+  padding: 20px;
+  padding-top: 6px;
+}

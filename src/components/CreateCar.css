@@ -1,0 +1,81 @@
+#title {
+  color: #ffffff;
+  font-size: 24px;
+  margin-bottom: -5px;
+}
+
+.box {
+  margin-bottom: 20px;
+  background-color: #00000071;
+  border-radius: 20px;
+  padding: 20px;
+  backdrop-filter: blur(40px);
+  border: 1px dotted white;
+}
+
+.label {
+  display: block;
+  margin-bottom: 25px;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.entrance,
+.select {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  border: 0, 5px solid white;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  color: #fff;
+  background-color: #0056b1e6;
+  font-size: 16px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+#upper {
+  background-color: rgba(166, 20, 20, 0.817);
+}
+
+.select {
+  display: block;
+  width: 60%;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  background-color: #ffffffd4;
+  color: #000;
+  font-size: 16px;
+  -webkit-appearance: none; 
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.select::after {
+  content: "▼";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+#SplitChoice {
+  margin: 30px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
