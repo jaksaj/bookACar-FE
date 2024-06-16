@@ -2,7 +2,7 @@ import { useState } from "react";
 import api from "../axiosConfig";
 import { useNavigate } from "react-router-dom";
 import "./CreateCar.css";
-import { Cars } from "../constants";
+import { Cars, FuelTypes } from "../constants";
 
 function FormCreateCar() {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ function FormCreateCar() {
   };
   const handleSeatCapacityChange = (e) => {
     const inputValue = e.target.value;
-    setSeatCapacity(inputValue);
+    setSeatCapacity(inputValue); // TODO limit to 1-9 and also other validations
   };
   const handleFuelTypeChange = (e) => {
     const inputValue = e.target.value;
@@ -127,7 +127,6 @@ function FormCreateCar() {
         <input
           type="number"
           min="0"
-
           value={pricePerDay}
           onChange={handlePricePerDayChange}
           placeholder="Enter price per day"
@@ -158,13 +157,18 @@ function FormCreateCar() {
 
       <div>
         <label className="label">Fuel type</label>
-        <input
-          type="text"
+        <select
           value={fuelType}
           onChange={handleFuelTypeChange}
-          placeholder="Enter fuel type"
           className="entrance"
-        />
+        >
+          <option value="">Select fuel type</option>
+          {FuelTypes.map((type) => (
+            <option key={type} value={type}>
+              {type}
+            </option>
+          ))}
+        </select>
       </div>
 
       <button type="button" onClick={testToken} className="button">

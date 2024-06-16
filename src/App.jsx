@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import FormCreateCar from "./components/FormCreateCar";
 import Car from "./components/Car";
+import Reservations from "./components/Reservations";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/home/*" element={<HomePage />} />
           <Route path="/create" element={<FormCreateCar />} />
           <Route path="/home/car/:carId" element={<Car />} />
+          <Route path="/reservations" element={<Reservations />} />
         </Routes>
       </div>
     </BrowserRouter>

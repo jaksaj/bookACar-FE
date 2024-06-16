@@ -6,3 +6,5 @@ export const Cars = {
     Honda: ["Civic", "Accord", "CR-V"],
     BMW: ["3 Series", "5 Series", "7 Series"],
 };
+
+export const FuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid"];
