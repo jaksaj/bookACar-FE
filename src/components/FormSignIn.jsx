@@ -60,7 +60,7 @@ function FormSignIn() {
       >
         <div id="header">
           <h1 id="welcome">Welcome to</h1>
-          <h1 id="logo">myFitness</h1>
+          <h1 id="logo">BookACar</h1>
         </div>
 
         <form onSubmit={handleSignIn}>

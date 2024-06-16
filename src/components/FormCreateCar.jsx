@@ -2,12 +2,13 @@ import { useState } from "react";
 import api from "../axiosConfig";
 import { useNavigate } from "react-router-dom";
 import "./CreateCar.css";
+import { Cars } from "../constants";
 
 function FormCreateCar() {
   const navigate = useNavigate();
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
-  const [year, setYear] = useState("");
+  const [year, setYear] = useState(2000);
   const [pricePerDay, setPricePerDay] = useState("");
   const [isAvailable, setIsAvailable] = useState(true);
   const [seatCapacity, setSeatCapacity] = useState("");
@@ -22,8 +23,15 @@ function FormCreateCar() {
     setModel(inputValue);
   };
   const handleYearChange = (e) => {
-    const inputValue = e.target.value;
-    setYear(inputValue);
+    let inputValue = e.target.value;
+    if (inputValue !== "") {
+      inputValue = parseInt(inputValue, 10);
+      if (inputValue >= 1900 && inputValue <= 2024) {
+        setYear(inputValue);
+      }
+    } else {
+      setYear(null);
+    }
   };
   const handlePricePerDayChange = (e) => {
     const inputValue = e.target.value;
@@ -50,7 +58,7 @@ function FormCreateCar() {
     if (
       make.length < 1 ||
       model.length < 1 ||
-      year.length < 1 ||
+      year === null ||
       pricePerDay.length < 1 ||
       seatCapacity.length < 1 ||
       fuelType.length < 1
@@ -80,24 +88,27 @@ function FormCreateCar() {
 
       <div>
         <label className="label">Make</label>
-        <input
-          type="text"
-          value={make}
-          onChange={handleMakeChange}
-          placeholder="Enter make"
-          className="entrance"
-        />
+        <select value={make} onChange={handleMakeChange} className="entrance">
+          <option value="">Select make</option>
+          {Object.keys(Cars).map((make) => (
+            <option key={make} value={make}>
+              {make}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div>
         <label className="label">Model</label>
-        <input
-          type="text"
-          value={model}
-          onChange={handleModelChange}
-          placeholder="Enter model"
-          className="entrance"
-        />
+        <select value={model} onChange={handleModelChange} className="entrance">
+          <option value="">Select model</option>
+          {make &&
+            Cars[make].map((model) => (
+              <option key={model} value={model}>
+                {model}
+              </option>
+            ))}
+        </select>
       </div>
 
       <div>
@@ -115,6 +126,8 @@ function FormCreateCar() {
         <label className="label">Price per day</label>
         <input
           type="number"
+          min="0"
+
           value={pricePerDay}
           onChange={handlePricePerDayChange}
           placeholder="Enter price per day"
