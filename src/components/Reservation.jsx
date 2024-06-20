@@ -9,7 +9,8 @@ import Review from "./Review";
 function Reservation() {
   const [reservation, setReservation] = useState([]);
   const [carInfo, setCarInfo] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Step 1: Initialize isLoading state
+  const [isLoading, setIsLoading] = useState(true);
+  const [isReservationOwner, setIsReservationOwner] = useState(false);
   const token = localStorage.getItem("token");
   const userId = jwtDecode(token).userId;
 
@@ -35,6 +36,7 @@ function Reservation() {
         if (reservationResponse.status === 200 || carResponse.status === 200) {
           setReservation(reservationResponse.data);
           setCarInfo(carResponse.data);
+          setIsReservationOwner(reservationResponse.data.user === userId);
         } else {
           console.error("Error fetching reservation:", reservationResponse); // TODO error for carResponse
         }
@@ -66,8 +68,8 @@ function Reservation() {
       <h2>{reservation.totalCost + "€"}</h2>
       <p>From: {new Date(reservation.fromDate).toLocaleDateString()}</p>
       <p>To: {new Date(reservation.toDate).toLocaleDateString()}</p>
-      {!isPastDate(reservation.toDate) && userId === reservation?.user && (
-        <Review reservation={reservation} />
+      {!isPastDate(reservation.toDate) && (
+        <Review reservation={reservation} isReservationOwner={isReservationOwner} />
       )}
 
       <button

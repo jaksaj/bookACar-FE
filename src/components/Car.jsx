@@ -5,6 +5,7 @@ import "./HomePage.css";
 import "./Car.css";
 import { jwtDecode } from "jwt-decode";
 import ReservationItem from "./ReservationItem";
+import ReviewItem from "./ReviewItem";
 
 function Car() {
   const token = localStorage.getItem("token");
@@ -18,16 +19,28 @@ function Car() {
   const [reservations, setReservations] = useState([]);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [carReviews, setCarReviews] = useState([]);
+
+  const calculateAverageRating = (reviews) => {
+    let sum = 0;
+    for (let i = 0; i < reviews.length; i++) {
+      sum += reviews[i].rating;
+    }
+    return sum / reviews.length;
+  };
 
   useEffect(() => {
     const fetchCarInfo = async () => {
       setIsLoading(true);
       try {
         const response = await api.get(`/cars/${carId}`);
-        if (response.status === 200) {
+        const reviewResponse = await api.get(`/reviews/car/${carId}`);
+        if (response.status === 200 && reviewResponse.status === 200) {
           setCarInfo(response.data);
+          setCarReviews(reviewResponse.data);
+          console.log("Car reviews" + reviewResponse.data);
         } else {
-          console.error("Error fetching car info:", response);
+          console.error("Error fetching car info:", response); // TODO error for reviewResponse
         }
       } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -134,7 +147,19 @@ function Car() {
         <h4>Price per day: {carInfo.pricePerDay}</h4>
         <h4>Seat capacity: {carInfo.seatCapacity}</h4>
         <h4>Fuel type: {carInfo.fuelType}</h4>
+        <h4>{carReviews && "Rating: " + calculateAverageRating(carReviews)}</h4>
       </div>
+
+      {carReviews && (
+        <>
+          <h2>Reviews</h2>
+          <ul>
+            {carReviews.map((review) => (
+              <ReviewItem key={review._id} review={review} />
+            ))}
+          </ul>
+        </>
+      )}
       {isOwner ? (
         <>
           <h2>Your reservations</h2>

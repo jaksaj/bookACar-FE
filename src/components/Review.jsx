@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../axiosConfig";
 
-const Review = ({ reservation }) => {
+const Review = ({ reservation, isReservationOwner }) => {
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState(null);
@@ -66,7 +66,7 @@ const Review = ({ reservation }) => {
   if (review) {
     return (
       <div>
-        <h2>Your Review</h2>
+        <h2>{isReservationOwner ? "Your Review" : "Client review"} </h2>
         <p>
           Rating: {review.rating} {review.rating === 1 ? "star" : "stars"}
         </p>
@@ -75,7 +75,7 @@ const Review = ({ reservation }) => {
     );
   }
 
-  return (
+  return isReservationOwner ? (
     <div>
       <textarea
         value={reviewText}
@@ -91,7 +91,7 @@ const Review = ({ reservation }) => {
       </select>
       <button onClick={handleSubmit}>Submit Review</button>
     </div>
-  );
+  ) : null;
 };
 
 export default Review;
