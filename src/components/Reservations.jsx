@@ -5,13 +5,15 @@ import "./HomePage.css";
 import "./Car.css";
 import ReservationItem from "./ReservationItem";
 
-function Car() {
+function Reservations() {
   const [reservations, setReservations] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchReservations = async () => {
+      setIsLoading(true);
       try {
         const response = await api.get("/reservations/user");
         if (response.status === 200) {
@@ -25,6 +27,8 @@ function Car() {
         } else {
           console.error("Error fetching reservations:", error);
         }
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchReservations();
@@ -34,7 +38,9 @@ function Car() {
     <div className="home-page">
       <h2>Your reservations</h2>
 
-      {reservations.length === 0 ? (
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : reservations.length === 0 ? (
         <p>No reservations yet</p>
       ) : (
         <ul>
@@ -55,4 +61,4 @@ function Car() {
   );
 }
 
-export default Car;
+export default Reservations;

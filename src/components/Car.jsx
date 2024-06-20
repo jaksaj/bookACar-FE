@@ -10,6 +10,7 @@ function Car() {
   const token = localStorage.getItem("token");
   const userId = jwtDecode(token).userId;
   const [isOwner, setIsOwner] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
   const { carId } = useParams();
@@ -20,6 +21,7 @@ function Car() {
 
   useEffect(() => {
     const fetchCarInfo = async () => {
+      setIsLoading(true);
       try {
         const response = await api.get(`/cars/${carId}`);
         if (response.status === 200) {
@@ -33,12 +35,17 @@ function Car() {
         } else {
           console.error("Error fetching car info:", error);
         }
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchCarInfo();
   }, [navigate, carId]);
+
   useEffect(() => {
     const fetchReservationInfo = async () => {
+      if (!isOwner) return;
+      setIsLoading(true);
       try {
         const response = await api.get(`/reservations/car/${carId}`);
         console.log("Res response" + response);
@@ -53,13 +60,13 @@ function Car() {
         } else {
           console.error("Error fetching car info:", error);
         }
+      } finally {
+        setIsLoading(false);
       }
     };
     setIsOwner(() => carInfo.owner === userId);
-    if (isOwner) {
-      fetchReservationInfo();
-    }
-  }, [carInfo]);
+    fetchReservationInfo();
+  }, [carInfo, isOwner, navigate, carId]);
 
   const handleDelete = async () => {
     try {
@@ -115,6 +122,8 @@ function Car() {
       alert(error.response.data.message ?? "Failed to create reservation.");
     }
   };
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="home-page">

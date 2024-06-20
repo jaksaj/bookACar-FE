@@ -6,6 +6,7 @@ import HomePage from "./components/HomePage";
 import FormCreateCar from "./components/FormCreateCar";
 import Car from "./components/Car";
 import Reservations from "./components/Reservations";
+import Reservation from "./components/Reservation";
 
 function App() {
   return (
@@ -19,6 +20,10 @@ function App() {
           <Route path="/create" element={<FormCreateCar />} />
           <Route path="/home/car/:carId" element={<Car />} />
           <Route path="/reservations" element={<Reservations />} />
+          <Route
+            path="/reservations/:reservationId"
+            element={<Reservation />}
+          />
         </Routes>
       </div>
     </BrowserRouter>

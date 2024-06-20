@@ -8,11 +8,13 @@ function HomePage() {
   const navigate = useNavigate();
   const [cars, setCars] = useState([]);
   const [myCars, setMyCars] = useState([]);
-  const [viewMyCars, setViewMyCars] = useState(false);
+  const [viewMode, setViewMode] = useState("all");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchCars = async () => {
       try {
+        setIsLoading(true);
         const response = await api.get("/cars");
         if (response.status === 200) {
           setCars(response.data);
@@ -45,9 +47,20 @@ function HomePage() {
         console.error("Error fetching cars", error);
       }
     };
-    fetchCars();
-    fetchMyCars();
+    Promise.all([fetchCars(), fetchMyCars()]).then(() => setIsLoading(false));
   }, []);
+
+  const toggleViewMode = () => {
+    setViewMode(viewMode === "all" ? "my" : "all");
+  };
+
+  const displayCars = viewMode === "my" ? myCars : cars;
+  const noCarsMessage =
+    viewMode === "my"
+      ? "You do not have any cars"
+      : "There are no cars available to rent";
+  const viewButtonText = viewMode === "my" ? "View all cars" : "View my cars";
+  const headerText = viewMode === "my" ? "My cars:" : "Rent a car:";
 
   return (
     <div className="home-page">
@@ -62,34 +75,29 @@ function HomePage() {
 
       <div id="content1">
         <div id="form-section">
-          {
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
             <>
-              <h2> {viewMyCars ? "My cars:" : "Rent a car:"} </h2>
+              <h2>{headerText}</h2>
               <ul className="unorderedList">
-                {viewMyCars ? (
-                  myCars.length > 0 ? (
-                    myCars.map((car) => <CarItem key={car._id} car={car} />)
-                  ) : (
-                    <p>You do not have any cars</p>
-                  )
-                ) : cars.length > 0 ? (
-                  cars.map((car) => <CarItem key={car._id} car={car} />)
+                {displayCars.length > 0 ? (
+                  displayCars.map((car) => <CarItem key={car._id} car={car} />)
                 ) : (
-                  <p>There are no cars available to rent</p>
+                  <p>{noCarsMessage}</p>
                 )}
               </ul>
             </>
-          }
+          )}
         </div>
         <div id="text-section">
-          {viewMyCars && (
+          {viewMode === "my" && (
             <Link to={"/create"}>
               <button>ADD NEW CAR</button>
             </Link>
           )}
-          <button onClick={() => setViewMyCars(!viewMyCars)} id="viewMyCars">
-            {viewMyCars ? "View all cars" : "View my cars"}
-            {/*TODO refactor to not use viewMyCars in so many places && myb add isRenting flag or something similar*/}
+          <button onClick={toggleViewMode} id="viewMyCars">
+            {viewButtonText}
           </button>
         </div>
       </div>
