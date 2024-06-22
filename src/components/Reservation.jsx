@@ -1,8 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../axiosConfig";
-import "./HomePage.css";
-import "./Car.css";
 import { jwtDecode } from "jwt-decode";
 import Review from "./Review";
 
@@ -38,7 +36,7 @@ function Reservation() {
           setCarInfo(carResponse.data);
           setIsReservationOwner(reservationResponse.data.user === userId);
         } else {
-          console.error("Error fetching reservation:", reservationResponse); // TODO error for carResponse
+          console.error("Error fetching reservation:", reservationResponse);
         }
       } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -58,7 +56,7 @@ function Reservation() {
   }
 
   return (
-    <div className="home-page">
+    <div>
       {userId === reservation?.user ? (
         <h2>Your reservation</h2>
       ) : (
@@ -69,14 +67,16 @@ function Reservation() {
       <p>From: {new Date(reservation.fromDate).toLocaleDateString()}</p>
       <p>To: {new Date(reservation.toDate).toLocaleDateString()}</p>
       {!isPastDate(reservation.toDate) && (
-        <Review reservation={reservation} isReservationOwner={isReservationOwner} />
+        <Review
+          reservation={reservation}
+          isReservationOwner={isReservationOwner}
+        />
       )}
 
       <button
         type="button"
         onClick={() => navigate(-1)}
-        className="button"
-        id="upper"
+        style={{ backgroundColor: "red" }}
       >
         BACK
       </button>

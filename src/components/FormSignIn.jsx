@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../axiosConfig";
-import "./SignIn.css";
+import Logo from "./Logo";
 
 function FormSignIn() {
   const navigate = useNavigate();
@@ -50,23 +50,13 @@ function FormSignIn() {
   };
   return (
     <>
-      <div
-        id="content"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <div id="header">
-          <h1 id="welcome">Welcome to</h1>
-          <h1 id="logo">BookACar</h1>
-        </div>
+      <div>
+        <Logo />
 
         <form onSubmit={handleSignIn}>
           <div>
             <label>
-              Email
+              Email:
               <input
                 type="email"
                 name="email"
@@ -79,7 +69,7 @@ function FormSignIn() {
               {!isEmailValid && "This is not a valid email address"}
             </div>
             <label>
-              Password
+              Password:
               <input
                 type="password"
                 name="password"
@@ -93,9 +83,7 @@ function FormSignIn() {
             </div>
           </div>
 
-          <button id="button1" type="submit">
-            Sign in!
-          </button>
+          <button>Sign in!</button>
         </form>
         <p>
           You do not have a account? <Link to={"/register"}>Register!</Link>

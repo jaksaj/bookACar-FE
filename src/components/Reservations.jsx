@@ -1,8 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../axiosConfig";
-import "./HomePage.css";
-import "./Car.css";
 import ReservationItem from "./ReservationItem";
 
 function Reservations() {
@@ -35,7 +33,7 @@ function Reservations() {
   }, [navigate]);
 
   return (
-    <div className="home-page">
+    <div>
       <h2>Your reservations</h2>
 
       {isLoading ? (
@@ -52,8 +50,7 @@ function Reservations() {
       <button
         type="button"
         onClick={() => navigate(-1)}
-        className="button"
-        id="upper"
+        style={{ backgroundColor: "red" }}
       >
         BACK
       </button>

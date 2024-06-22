@@ -1,0 +1,13 @@
+.entrance {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+.label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}

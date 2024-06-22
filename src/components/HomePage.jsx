@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../axiosConfig";
-import "./HomePage.css";
 import CarItem from "./CarItem";
+import Logo from "./Logo";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -63,24 +63,21 @@ function HomePage() {
   const headerText = viewMode === "my" ? "My cars:" : "Rent a car:";
 
   return (
-    <div className="home-page">
-      <div id="header">
-        <h1 id="welcome">Welcome to</h1>
-        <h1 id="logo">BookACar</h1>
-      </div>
+    <div>
+      <Logo />
 
       <Link to={"/reservations"}>
         <button>MY RESERVATIONS</button>
       </Link>
 
-      <div id="content1">
-        <div id="form-section">
+      <div>
+        <div>
           {isLoading ? (
             <p>Loading...</p>
           ) : (
             <>
               <h2>{headerText}</h2>
-              <ul className="unorderedList">
+              <ul>
                 {displayCars.length > 0 ? (
                   displayCars.map((car) => <CarItem key={car._id} car={car} />)
                 ) : (
@@ -90,15 +87,13 @@ function HomePage() {
             </>
           )}
         </div>
-        <div id="text-section">
+        <div>
           {viewMode === "my" && (
             <Link to={"/create"}>
               <button>ADD NEW CAR</button>
             </Link>
           )}
-          <button onClick={toggleViewMode} id="viewMyCars">
-            {viewButtonText}
-          </button>
+          <button onClick={toggleViewMode}>{viewButtonText}</button>
         </div>
       </div>
     </div>

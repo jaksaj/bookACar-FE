@@ -1,7 +1,7 @@
 import { useState } from "react";
 import api from "../axiosConfig";
 import { useNavigate } from "react-router-dom";
-import "./CreateCar.css";
+import styles from "./FormCreateCar.module.css";
 import { Cars, FuelTypes } from "../constants";
 
 function FormCreateCar() {
@@ -9,9 +9,8 @@ function FormCreateCar() {
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [year, setYear] = useState(2000);
-  const [pricePerDay, setPricePerDay] = useState("");
-  const [isAvailable, setIsAvailable] = useState(true);
-  const [seatCapacity, setSeatCapacity] = useState("");
+  const [pricePerDay, setPricePerDay] = useState(10);
+  const [seatCapacity, setSeatCapacity] = useState(4);
   const [fuelType, setFuelType] = useState("");
 
   const handleMakeChange = (e) => {
@@ -26,7 +25,7 @@ function FormCreateCar() {
     let inputValue = e.target.value;
     if (inputValue !== "") {
       inputValue = parseInt(inputValue, 10);
-      if (inputValue >= 1900 && inputValue <= 2024) {
+      if (inputValue >= 2000 && inputValue <= 2024) {
         setYear(inputValue);
       }
     } else {
@@ -37,13 +36,9 @@ function FormCreateCar() {
     const inputValue = e.target.value;
     setPricePerDay(inputValue);
   };
-  const handleIsAvailableChange = (e) => {
-    const inputValue = e.target.checked;
-    setIsAvailable(inputValue);
-  };
   const handleSeatCapacityChange = (e) => {
     const inputValue = e.target.value;
-    setSeatCapacity(inputValue); // TODO limit to 1-9 and also other validations
+    setSeatCapacity(inputValue);
   };
   const handleFuelTypeChange = (e) => {
     const inputValue = e.target.value;
@@ -72,7 +67,7 @@ function FormCreateCar() {
         model,
         year,
         pricePerDay,
-        isAvailable,
+        isAvailable: true,
         seatCapacity,
         fuelType,
       });
@@ -83,12 +78,16 @@ function FormCreateCar() {
   };
 
   return (
-    <div className="box">
+    <div>
       <h2 id="title">Add a new rental car</h2>
 
       <div>
-        <label className="label">Make</label>
-        <select value={make} onChange={handleMakeChange} className="entrance">
+        <label className={styles.label}>Make</label>
+        <select
+          value={make}
+          onChange={handleMakeChange}
+          className={styles.entrance}
+        >
           <option value="">Select make</option>
           {Object.keys(Cars).map((make) => (
             <option key={make} value={make}>
@@ -99,8 +98,12 @@ function FormCreateCar() {
       </div>
 
       <div>
-        <label className="label">Model</label>
-        <select value={model} onChange={handleModelChange} className="entrance">
+        <label className={styles.label}>Model</label>
+        <select
+          value={model}
+          onChange={handleModelChange}
+          className={styles.entrance}
+        >
           <option value="">Select model</option>
           {make &&
             Cars[make].map((model) => (
@@ -112,55 +115,47 @@ function FormCreateCar() {
       </div>
 
       <div>
-        <label className="label">Year</label>
+        <label className={styles.label}>Year</label>
         <input
           type="number"
+          min="1990"
           value={year}
           onChange={handleYearChange}
           placeholder="Enter year"
-          className="entrance"
+          className={styles.entrance}
         />
       </div>
 
       <div>
-        <label className="label">Price per day</label>
+        <label className={styles.label}>Price per day</label>
         <input
           type="number"
-          min="0"
+          min="1"
           value={pricePerDay}
           onChange={handlePricePerDayChange}
           placeholder="Enter price per day"
-          className="entrance"
+          className={styles.entrance}
         />
       </div>
 
       <div>
-        <label className="label">Is available</label>
-        <input
-          type="checkbox"
-          checked={isAvailable}
-          onChange={handleIsAvailableChange}
-          className="checkbox"
-        />
-      </div>
-
-      <div>
-        <label className="label">Seat capacity</label>
+        <label className={styles.label}>Seat capacity</label>
         <input
           type="number"
+          min="1"
           value={seatCapacity}
           onChange={handleSeatCapacityChange}
           placeholder="Enter seat capacity"
-          className="entrance"
+          className={styles.entrance}
         />
       </div>
 
       <div>
-        <label className="label">Fuel type</label>
+        <label className={styles.label}>Fuel type</label>
         <select
           value={fuelType}
           onChange={handleFuelTypeChange}
-          className="entrance"
+          className={styles.entrance}
         >
           <option value="">Select fuel type</option>
           {FuelTypes.map((type) => (
@@ -171,10 +166,10 @@ function FormCreateCar() {
         </select>
       </div>
 
-      <button type="button" onClick={testToken} className="button">
+      <button type="button" onClick={testToken}>
         CREATE
       </button>
-      <button type="button" onClick={back} className="button" id="upper">
+      <button type="button" onClick={back} style={{ backgroundColor: "red" }}>
         BACK
       </button>
     </div>

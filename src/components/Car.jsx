@@ -1,8 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../axiosConfig";
-import "./HomePage.css";
-import "./Car.css";
+import styles from "./Car.module.css";
 import { jwtDecode } from "jwt-decode";
 import ReservationItem from "./ReservationItem";
 import ReviewItem from "./ReviewItem";
@@ -30,7 +29,7 @@ function Car() {
   };
 
   useEffect(() => {
-    const fetchCarInfo = async () => {
+    const fetchCarInfoAndReservationInfo = async () => {
       setIsLoading(true);
       try {
         const response = await api.get(`/cars/${carId}`);
@@ -38,9 +37,28 @@ function Car() {
         if (response.status === 200 && reviewResponse.status === 200) {
           setCarInfo(response.data);
           setCarReviews(reviewResponse.data);
-          console.log("Car reviews" + reviewResponse.data);
         } else {
-          console.error("Error fetching car info:", response); // TODO error for reviewResponse
+          console.error("Error fetching car info:", response);
+          if (reviewResponse.status !== 200) {
+            console.error("Error fetching car reviews:", reviewResponse);
+          }
+        }
+
+        const isCurrentUserOwner = response.data.owner === userId;
+        setIsOwner(isCurrentUserOwner);
+
+        if (isCurrentUserOwner) {
+          const reservationResponse = await api.get(
+            `/reservations/car/${carId}`
+          );
+          if (reservationResponse.status === 200) {
+            setReservations(reservationResponse.data);
+          } else {
+            console.error(
+              "Error fetching reservation info:",
+              reservationResponse
+            );
+          }
         }
       } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -52,35 +70,9 @@ function Car() {
         setIsLoading(false);
       }
     };
-    fetchCarInfo();
-  }, [navigate, carId]);
 
-  useEffect(() => {
-    const fetchReservationInfo = async () => {
-      if (!isOwner) return;
-      setIsLoading(true);
-      try {
-        const response = await api.get(`/reservations/car/${carId}`);
-        console.log("Res response" + response);
-        if (response.status === 200) {
-          setReservations(response.data);
-        } else {
-          console.error("Error fetching reservation info:", response);
-        }
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          navigate("/login");
-        } else {
-          console.error("Error fetching car info:", error);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    setIsOwner(() => carInfo.owner === userId);
-    fetchReservationInfo();
-  }, [carInfo, isOwner, navigate, carId]);
-
+    fetchCarInfoAndReservationInfo();
+  }, [navigate]);
   const handleDelete = async () => {
     try {
       const response = await api.delete(`/cars/${carInfo._id}`);
@@ -139,18 +131,21 @@ function Car() {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="home-page">
+    <div className={styles.main}>
       <h3>{carInfo.make + " " + carInfo.model}</h3>
 
-      <div id="content1">
+      <div>
         <h4>Year: {carInfo.year}</h4>
         <h4>Price per day: {carInfo.pricePerDay}</h4>
         <h4>Seat capacity: {carInfo.seatCapacity}</h4>
         <h4>Fuel type: {carInfo.fuelType}</h4>
-        <h4>{carReviews && "Rating: " + calculateAverageRating(carReviews)}</h4>
+        <h4>
+          {carReviews?.length > 1 &&
+            "Rating: " + calculateAverageRating(carReviews)}
+        </h4>
       </div>
 
-      {carReviews && (
+      {carReviews?.length > 1 && (
         <>
           <h2>Reviews</h2>
           <ul>
@@ -179,8 +174,7 @@ function Car() {
           <button
             type="button"
             onClick={handleDelete}
-            className="button"
-            id="upper"
+            style={{ backgroundColor: "red" }}
           >
             DELETE
           </button>
@@ -204,16 +198,14 @@ function Car() {
               onChange={(e) => setEndDate(e.target.value)}
             />
           </div>
-          <button id="plus" onClick={handleBook}>
-            BOOK
-          </button>
+          <button onClick={handleBook}>BOOK</button>
         </>
       )}
       <button
         type="button"
         onClick={() => navigate(-1)}
-        className="button"
         id="upper"
+        style={{ backgroundColor: "red" }}
       >
         BACK
       </button>

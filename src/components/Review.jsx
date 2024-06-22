@@ -29,7 +29,6 @@ const Review = ({ reservation, isReservationOwner }) => {
     };
 
     fetchReview();
-    console.log(review);
   }, [reservation]);
 
   const handleReviewTextChange = (event) => {
@@ -53,7 +52,6 @@ const Review = ({ reservation, isReservationOwner }) => {
       if (response.status !== 200) {
         throw new Error("Failed to submit review");
       }
-      console.log("Review submitted successfully:", response);
     } catch (error) {
       console.error("Error submitting review:", error);
     }

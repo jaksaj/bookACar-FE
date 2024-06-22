@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../axiosConfig";
-import "./Register.css";
+import Logo from "./Logo";
 
 function FormRegistration() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ function FormRegistration() {
     lastName: "",
     address: "",
     phoneNumber: "",
-    canList: false
+    canList: false,
   });
 
   const [isUsernameValid, setIsUsernameValid] = useState(true);
@@ -48,7 +48,7 @@ function FormRegistration() {
       firstName,
       lastName,
       address,
-      phoneNumber
+      phoneNumber,
     } = registrationData;
 
     setIsUsernameValid(username.length >= 4);
@@ -82,14 +82,7 @@ function FormRegistration() {
   return (
     <>
       <form onSubmit={handleRegistration} id="form_reg">
-        <div>
-          <div id="header">
-            <h1 id="welcome" style={{ color: "white" }}>
-              Welcome to
-            </h1>
-            <h1 id="logo">BookACar</h1>
-          </div>
-        </div>
+        <Logo />
         <div>
           <label id="label1">
             Username:
@@ -191,9 +184,7 @@ function FormRegistration() {
           </div>
         </div>
 
-        <button type="submit" className="button">
-          Register!
-        </button>
+        <button type="submit">Register!</button>
       </form>
       <p>
         You already have an account? <Link to={"/login"}>Sign in.</Link>
@@ -203,4 +194,3 @@ function FormRegistration() {
 }
 
 export default FormRegistration;
-
