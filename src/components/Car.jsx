@@ -5,6 +5,12 @@ import styles from "./Car.module.css";
 import { jwtDecode } from "jwt-decode";
 import ReservationItem from "./ReservationItem";
 import ReviewItem from "./ReviewItem";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowLeft,
+  faCheck,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Car() {
   const token = localStorage.getItem("token");
@@ -72,7 +78,8 @@ function Car() {
     };
 
     fetchCarInfoAndReservationInfo();
-  }, [navigate]);
+  }, [navigate, carId, userId]);
+
   const handleDelete = async () => {
     try {
       const response = await api.delete(`/cars/${carInfo._id}`);
@@ -133,7 +140,6 @@ function Car() {
   return (
     <div className={styles.main}>
       <h3>{carInfo.make + " " + carInfo.model}</h3>
-
       <div>
         <h4>Year: {carInfo.year}</h4>
         <h4>Price per day: {carInfo.pricePerDay}</h4>
@@ -146,19 +152,18 @@ function Car() {
       </div>
 
       {carReviews?.length > 1 && (
-        <>
+        <div className={styles.reviews}>
           <h2>Reviews</h2>
           <ul>
             {carReviews.map((review) => (
               <ReviewItem key={review._id} review={review} />
             ))}
           </ul>
-        </>
+        </div>
       )}
       {isOwner ? (
-        <>
+        <div className={styles.reservations}>
           <h2>Your reservations</h2>
-
           {reservations.length === 0 ? (
             <p>No reservations yet</p>
           ) : (
@@ -176,21 +181,23 @@ function Car() {
             onClick={handleDelete}
             style={{ backgroundColor: "red" }}
           >
+            <FontAwesomeIcon icon={faTrash} className={styles.buttonIcon} />{" "}
             DELETE
           </button>
-        </>
+        </div>
       ) : (
-        <>
-          <div>
-            <label htmlFor="start-date">Start Date:</label>
+        <div className={styles.dateInput}>
+          <label htmlFor="start-date">Start Date:</label>
+          <div className={styles.inputContainer}>
             <input
               id="start-date"
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
             />
-            <br />
-            <label htmlFor="end-date">End Date:</label>
+          </div>
+          <label htmlFor="end-date">End Date:</label>
+          <div className={styles.inputContainer}>
             <input
               id="end-date"
               type="date"
@@ -198,15 +205,18 @@ function Car() {
               onChange={(e) => setEndDate(e.target.value)}
             />
           </div>
-          <button onClick={handleBook}>BOOK</button>
-        </>
+          <button onClick={handleBook}>
+            <FontAwesomeIcon icon={faCheck} className={styles.buttonIcon} />{" "}
+            BOOK
+          </button>
+        </div>
       )}
       <button
         type="button"
         onClick={() => navigate(-1)}
-        id="upper"
         style={{ backgroundColor: "red" }}
       >
+        <FontAwesomeIcon icon={faArrowLeft} className={styles.buttonIcon} />{" "}
         BACK
       </button>
     </div>

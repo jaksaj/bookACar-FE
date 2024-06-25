@@ -3,7 +3,7 @@ import api from "../axiosConfig";
 
 const Review = ({ reservation, isReservationOwner }) => {
   const [reviewText, setReviewText] = useState("");
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(1);
   const [review, setReview] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -52,6 +52,7 @@ const Review = ({ reservation, isReservationOwner }) => {
       if (response.status !== 200) {
         throw new Error("Failed to submit review");
       }
+      window.location.reload();
     } catch (error) {
       console.error("Error submitting review:", error);
     }

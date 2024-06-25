@@ -1,11 +1,67 @@
+/* Car.module.css */
 .main {
-  border-radius: 20px;
-  backdrop-filter: blur(40px);
-  border: 1px dotted white;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.main h3 {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.main h4 {
+  font-size: 1.2em;
+  margin: 5px 0;
+}
+
+.dateInput label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.dateInput input {
+  width: calc(100% - 40px);
+  padding: 10px;
+  margin: 5px 0;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.dateInput {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  font-size: 30px;
-  width: 500px;
+}
+
+.dateInput .icon {
+  position: absolute;
+  right: 10px;
+  color: #888;
+}
+
+.reviews h2,
+.reservations h2 {
+  font-size: 1.5em;
+  margin-top: 20px;
+}
+
+.reviews ul,
+.reservations ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.reviews li,
+.reservations li {
+  background-color: #fff;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

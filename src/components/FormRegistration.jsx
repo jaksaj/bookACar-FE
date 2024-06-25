@@ -26,16 +26,7 @@ function FormRegistration() {
 
   const handleRegistration = (event) => {
     event.preventDefault();
-    validateInputs();
-    if (
-      isUsernameValid &&
-      isEmailValid &&
-      isPasswordValid &&
-      isFirstNameValid &&
-      isLastNameValid &&
-      isAddressValid &&
-      isPhoneNumberValid
-    ) {
+    if (validateInputs()) {
       registerUser(registrationData);
     }
   };
@@ -50,14 +41,31 @@ function FormRegistration() {
       address,
       phoneNumber,
     } = registrationData;
+    const validUsername = username.length >= 4;
+    const validEmail = email.includes("@") && email.length >= 5;
+    const validPassword = password.length >= 8;
+    const validFirstName = firstName.length > 3;
+    const validLastName = lastName.length > 3;
+    const validAddress = address.length > 3;
+    const validPhoneNumber = phoneNumber.length > 6;
 
-    setIsUsernameValid(username.length >= 4);
-    setIsEmailValid(email.includes("@") && email.length >= 5);
-    setIsPasswordValid(password.length >= 8);
-    setIsFirstNameValid(firstName.length > 3);
-    setIsLastNameValid(lastName.length > 3);
-    setIsAddressValid(address.length > 3);
-    setIsPhoneNumberValid(phoneNumber.length > 6);
+    setIsUsernameValid(validUsername);
+    setIsEmailValid(validEmail);
+    setIsPasswordValid(validPassword);
+    setIsFirstNameValid(validFirstName);
+    setIsLastNameValid(validLastName);
+    setIsAddressValid(validAddress);
+    setIsPhoneNumberValid(validPhoneNumber);
+
+    return (
+      validUsername &&
+      validEmail &&
+      validPassword &&
+      validFirstName &&
+      validLastName &&
+      validAddress &&
+      validPhoneNumber
+    );
   };
 
   const inputChange = (event) => {

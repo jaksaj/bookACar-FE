@@ -66,7 +66,7 @@ function Reservation() {
       <h2>{reservation.totalCost + "€"}</h2>
       <p>From: {new Date(reservation.fromDate).toLocaleDateString()}</p>
       <p>To: {new Date(reservation.toDate).toLocaleDateString()}</p>
-      {!isPastDate(reservation.toDate) && (
+      {isPastDate(reservation.toDate) && (
         <Review
           reservation={reservation}
           isReservationOwner={isReservationOwner}

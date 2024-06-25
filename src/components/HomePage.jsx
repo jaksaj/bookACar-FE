@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import api from "../axiosConfig";
 import CarItem from "./CarItem";
 import Logo from "./Logo";
+import { faCar, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -67,7 +69,10 @@ function HomePage() {
       <Logo />
 
       <Link to={"/reservations"}>
-        <button>MY RESERVATIONS</button>
+        <button>
+          {" "}
+          <FontAwesomeIcon icon={faCalendarAlt} /> MY RESERVATIONS
+        </button>
       </Link>
 
       <div>
@@ -93,7 +98,9 @@ function HomePage() {
               <button>ADD NEW CAR</button>
             </Link>
           )}
-          <button onClick={toggleViewMode}>{viewButtonText}</button>
+          <button onClick={toggleViewMode}>
+            <FontAwesomeIcon icon={faCar} /> {viewButtonText}
+          </button>
         </div>
       </div>
     </div>
